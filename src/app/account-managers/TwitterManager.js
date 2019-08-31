@@ -1,29 +1,26 @@
 import {AccountManager} from "./AccountManager";
+import {PUBLISH, SET_TW_ACCOUNT} from "../../store";
 
 export class TwitterManager extends AccountManager {
   static key = 'TWITTER'
   static title = 'Twitter'
   static maxCharactersLength = 250
 
-  associateAccount() {
-    this.validateAccount()
-    // TODO: do something async
-    console.log("Tw account associated: ", this.account)
+  constructor(store) {
+    super(store)
+    this.updateAccountMutation = SET_TW_ACCOUNT
+    this.associateAccountMethod = () => 'call tw API'
   }
 
   validateAccount() {
     // TODO: do something async
+    // eslint-disable-next-line no-console
     console.log("Tw account validated: ", this.account)
   }
 
   publish(publication) {
-    try {
-      this.validatePublication(publication)
-      // TODO: do something async
-      console.log("Tw publication: ", publication)
-    } catch (e) {
-      console.log(e.message)
-    }
+    this.validatePublication(publication)
+    this.store.dispatch(PUBLISH, publication)
   }
 
   validatePublication(publication) {

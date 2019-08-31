@@ -51,7 +51,7 @@ export default {
   },
   data() {
     return {
-      viewModel: new SocialMediaManager(),
+      viewModel: new SocialMediaManager(this.$store),
       facebookTitle: FacebookManager.title,
       facebookKey: FacebookManager.key,
       twitterTitle: TwitterManager.title,

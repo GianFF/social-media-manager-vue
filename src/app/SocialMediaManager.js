@@ -3,11 +3,11 @@ import {TwitterManager} from "./account-managers/TwitterManager";
 import {InstagramManager} from "./account-managers/InstagramManager";
 
 export class SocialMediaManager {
-  constructor() {
+  constructor(store) {
     this.managers = [
-      new FacebookManager(),
-      new TwitterManager(),
-      new InstagramManager(),
+      new FacebookManager(store),
+      new TwitterManager(store),
+      new InstagramManager(store),
     ]
     this.publication = ''
   }
