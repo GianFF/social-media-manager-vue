@@ -51,6 +51,10 @@ main {
       margin-bottom: 8px;
       @include fillable-field;
     }
+
+    p {
+      color: red;
+    }
   }
 
   section:not(:last-child) {

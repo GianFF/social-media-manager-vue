@@ -1,9 +1,7 @@
 import Vuex from "vuex";
 
 // Mutations:
-export const SET_FB_ACCOUNT = 'setFbAccount'
-export const SET_TW_ACCOUNT = 'setTwAccount'
-export const SET_INS_ACCOUNT = 'setInsAccount'
+export const SET_ACCOUNT = 'setAccount'
 // Actions:
 export const PUBLISH = 'publish'
 export const ASSOCIATE_ACCOUNT = 'associateAccount'
@@ -15,14 +13,16 @@ const initStore = () => new Vuex.Store({
     insAccount: '',
   },
   mutations: {
-    [SET_FB_ACCOUNT](state, account) {
-      state.fbAccount = account
-    },
-    [SET_TW_ACCOUNT](state, account) {
-      state.fbAccount = account
-    },
-    [SET_INS_ACCOUNT](state, account) {
-      state.insAccount = account
+    [SET_ACCOUNT](state, {account, key}) {
+      if (key === 'FACEBOOK') {
+        state.fbAccount = account
+      }
+      if (key === 'TWITTER') {
+        state.twAccount = account
+      }
+      if (key === 'INSTAGRAM') {
+        state.insAccount = account
+      }
     },
   },
   actions: {

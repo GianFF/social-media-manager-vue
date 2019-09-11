@@ -8,9 +8,11 @@
 
 <script>
 
+  import {ASSOCIATE_ACCOUNT, SET_ACCOUNT} from "../store";
+
 export default {
   name: 'sm-input',
-  props: ['title', 'viewModel', 'accountKey'],
+  props: ['title', 'accountKey', 'associateAccountMethod'],
   data() {
     return {
       inputContent: '',
@@ -18,11 +20,29 @@ export default {
   },
   methods: {
     updateAccount() {
-      this.viewModel.updateAccount(this.inputContent, this.accountKey)
+      this.$store.commit(SET_ACCOUNT, {account: this.inputContent, key: this.accountKey})
+    },
+    validateAccount() {
+      if (this.accountKey === 'FACEBOOK') {
+        // eslint-disable-next-line no-console
+        console.log("Fb account validated: ", this.inputContent)
+      }
+      if (this.accountKey === 'TWITTER') {
+        // eslint-disable-next-line no-console
+        console.log("Tw account validated: ", this.inputContent)
+      }
+      if (this.accountKey === 'INSTAGRAM') {
+        // eslint-disable-next-line no-console
+        console.log("Instagram account validated: ", this.inputContent)
+      }
     },
     associateAccount() {
       this.updateAccount()
-      this.viewModel.associateAccount(this.accountKey)
+      this.validateAccount()
+      this.$store.dispatch(ASSOCIATE_ACCOUNT, {
+        account: this.accountKey,
+        method: this.associateAccountMethod
+      })
     },
   },
 }

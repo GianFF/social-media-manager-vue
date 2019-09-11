@@ -7,19 +7,19 @@
     <main>
       <section>
         <h2>Accounts data</h2>
-        <SMInput :viewModel="viewModel"
-                 :title="facebookTitle"
-                 :accountKey="facebookKey">
+        <SMInput :title="facebookTitle"
+                 :accountKey="facebookKey"
+                 :associateAccountMethod="() => 'call fb API'">
         </SMInput>
 
-        <SMInput :viewModel="viewModel"
-                 :title="twitterTitle"
-                 :accountKey="twitterkey">
+        <SMInput :title="twitterTitle"
+                 :accountKey="twitterkey"
+                 :associateAccountMethod="() => 'call tw API'">
         </SMInput>
 
-        <SMInput :viewModel="viewModel"
-                 :title="instagramTitle"
-                 :accountKey="instagramkey">
+        <SMInput :title="instagramTitle"
+                 :accountKey="instagramkey"
+                 :associateAccountMethod="() => 'call instagram API'">
         </SMInput>
       </section>
 
@@ -27,6 +27,7 @@
         <h2>Publication</h2>
         <textarea v-model="publication"></textarea>
         <button title="publish on associated accounts" @click=publish> Publish </button>
+        <p>{{errorMessage}}</p>
       </section>
     </main>
 
@@ -38,11 +39,8 @@
 
 <script>
 
-import {SocialMediaManager} from "./app/SocialMediaManager";
-import {FacebookManager} from "./app/account-managers/FacebookManager";
-import {InstagramManager} from "./app/account-managers/InstagramManager";
-import {TwitterManager} from "./app/account-managers/TwitterManager";
 import SMInput from "./components/SMInput";
+import {PUBLISH} from "./store";
 
 export default {
   name: 'app',
@@ -51,23 +49,26 @@ export default {
   },
   data() {
     return {
-      viewModel: new SocialMediaManager(this.$store),
-      facebookTitle: FacebookManager.title,
-      facebookKey: FacebookManager.key,
-      twitterTitle: TwitterManager.title,
-      twitterkey: TwitterManager.key,
-      instagramTitle: InstagramManager.title,
-      instagramkey: InstagramManager.key,
+      facebookTitle: 'Facebook',
+      facebookKey: 'FACEBOOK',
+      twitterTitle: 'Twitter',
+      twitterkey: 'TWITTER',
+      instagramTitle: 'Instagram',
+      instagramkey: 'INSTAGRAM',
       publication: '',
+      errorMessage: '',
     }
   },
   methods: {
-    updatePublication() {
-      this.viewModel.updatePublication(this.publication)
-    },
-    publish() {
-      this.updatePublication()
-      this.viewModel.publish()
+    async publish() {
+      await this.$store.dispatch(PUBLISH, {publication: this.publication, account: 'FB'})
+      await this.$store.dispatch(PUBLISH, {publication: this.publication, account: 'INS'})
+
+      if (this.publication.length > 250) {
+        this.errorMessage = "Tw max length exceeded"
+      } else {
+        await this.$store.dispatch(PUBLISH, {publication: this.publication, account: 'INS'})
+      }
     },
   },
 }
