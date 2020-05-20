@@ -7,20 +7,9 @@
     <main>
       <section>
         <h2>Accounts data</h2>
-        <SMInput :viewModel="viewModel"
-                 :title="facebookTitle"
-                 :accountKey="facebookKey">
-        </SMInput>
-
-        <SMInput :viewModel="viewModel"
-                 :title="twitterTitle"
-                 :accountKey="twitterkey">
-        </SMInput>
-
-        <SMInput :viewModel="viewModel"
-                 :title="instagramTitle"
-                 :accountKey="instagramkey">
-        </SMInput>
+        <SMInput :viewModel="viewModel" :socialMediaName="facebook"/>
+        <SMInput :viewModel="viewModel" :socialMediaName="instagram"/>
+        <SMInput :viewModel="viewModel" :socialMediaName="twitter"/>
       </section>
 
       <section>
@@ -37,12 +26,8 @@
 </template>
 
 <script>
-
+import SMInput from './components/SMInput'
 import {SocialMediaManager} from "./app/SocialMediaManager";
-import {FacebookManager} from "./app/account-managers/FacebookManager";
-import {InstagramManager} from "./app/account-managers/InstagramManager";
-import {TwitterManager} from "./app/account-managers/TwitterManager";
-import SMInput from "./components/SMInput";
 
 export default {
   name: 'app',
@@ -50,15 +35,13 @@ export default {
     SMInput,
   },
   data() {
+    const socialMediaManager = new SocialMediaManager(this.$store);
     return {
-      viewModel: new SocialMediaManager(this.$store),
-      facebookTitle: FacebookManager.title,
-      facebookKey: FacebookManager.key,
-      twitterTitle: TwitterManager.title,
-      twitterkey: TwitterManager.key,
-      instagramTitle: InstagramManager.title,
-      instagramkey: InstagramManager.key,
+      viewModel: socialMediaManager,
       publication: '',
+      facebook: socialMediaManager.facebookName(),
+      instagram: socialMediaManager.instagramName(),
+      twitter: socialMediaManager.twitterName(),
     }
   },
   methods: {

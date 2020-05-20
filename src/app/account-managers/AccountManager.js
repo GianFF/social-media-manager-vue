@@ -1,8 +1,9 @@
-import {ASSOCIATE_ACCOUNT} from "../../store";
+import {ASSOCIATE_ACCOUNT, PUBLISH} from "../../store";
 
 export class AccountManager {
   updateAccountMutation
   associateAccountMethod
+  title
 
   constructor(store) {
     this.account = ''
@@ -26,8 +27,11 @@ export class AccountManager {
     this.store.commit(this.updateAccountMutation, this.account)
   }
 
-  // eslint-disable-next-line no-unused-vars
-  has(key) {
-    throw new Error('Subclass responsibility')
+  publish(publication) {
+    this.store.dispatch(PUBLISH, publication)
+  }
+
+  is(socialMediaName) {
+    return this.title === socialMediaName
   }
 }

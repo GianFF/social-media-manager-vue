@@ -12,12 +12,29 @@ export class SocialMediaManager {
     this.publication = ''
   }
 
-  associateAccount(key) {
-    this.selectManager(key).associateAccount()
+
+  facebookName() {
+    return 'Facebook'
   }
 
-  updateAccount(account, key) {
-    this.selectManager(key).updateAccount(account)
+  instagramName() {
+    return 'Instagram'
+  }
+
+  twitterName() {
+    return 'Twitter'
+  }
+
+  titleFor(socialMediaName) {
+    return this.selectManagerByName(socialMediaName).title
+  }
+
+  associateAccount(socialMediaName) {
+    this.selectManagerByName(socialMediaName).associateAccount()
+  }
+
+  updateAccount(account, socialMediaName) {
+    this.selectManagerByName(socialMediaName).updateAccount(account)
   }
 
   updatePublication(publication) {
@@ -28,9 +45,10 @@ export class SocialMediaManager {
     this.managers.forEach((manager) => manager.publish(this.publication))
   }
 
+
   // private
 
-  selectManager(key) {
-    return this.managers.find((manager) => manager.has(key))
+  selectManagerByName(socialMediaName) {
+    return this.managers.find((manager) => manager.is(socialMediaName))
   }
 }
